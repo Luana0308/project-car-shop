@@ -40,4 +40,15 @@ function createCartItemElement({ sku, name, salePrice }) {
   return li;
 }
 
-window.onload = () => { };
+const criandoLista = async (produto) => {
+  const listaResultados = await fetchProducts(produto);
+  const pegandoClasse = document.querySelector('.items');
+  listaResultados.forEach(({ id: sku, title: name, thumbnail: image }) => { 
+    const chamandoFuncao = createProductItemElement({ sku, name, image });
+    pegandoClasse.appendChild(chamandoFuncao); 
+  }); 
+};
+
+window.onload = async () => { 
+  await criandoLista('computador');
+};
