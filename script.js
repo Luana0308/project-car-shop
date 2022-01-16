@@ -5,12 +5,30 @@ function createProductImageElement(imageSource) {
   return img;
 }
 
+function cartItemClickListener(event) {
+  // coloque seu código aqui
+}
+
 function createCustomElement(element, className, innerText) {
   const e = document.createElement(element);
   e.className = className;
   e.innerText = innerText;
   return e;
 }
+function createCartItemElement({ id: sku, title: name, price: salePrice }) {
+  const li = document.createElement('li');
+  li.className = 'cart__item';
+  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  li.addEventListener('click', cartItemClickListener);
+  return li;
+}
+
+const adicionandoItemCarrinho = async (id) => {
+  const funcaoApiItem = await fetchItem(id);
+  const itemClasse = document.querySelector('.cart__items');
+  itemClasse.appendChild(createCartItemElement(funcaoApiItem));
+  console.log(id);
+};
 
 function createProductItemElement({ sku, name, image }) {
   const section = document.createElement('section');
@@ -19,25 +37,14 @@ function createProductItemElement({ sku, name, image }) {
   section.appendChild(createCustomElement('span', 'item__sku', sku));
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
-  section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
-
+  const item = createCustomElement('button', 'item__add', 'Adicionar ao carrinho!');
+  item.addEventListener('click', () => adicionandoItemCarrinho(sku));
+  section.appendChild(item);
   return section;
 }
 
 function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
-}
-
-function cartItemClickListener(event) {
-  // coloque seu código aqui
-}
-
-function createCartItemElement({ sku, name, salePrice }) {
-  const li = document.createElement('li');
-  li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
-  li.addEventListener('click', cartItemClickListener);
-  return li;
 }
 
 const criandoLista = async (produto) => {
@@ -51,4 +58,5 @@ const criandoLista = async (produto) => {
 
 window.onload = async () => { 
   await criandoLista('computador');
+  adicionandoItemCarrinho();
 };
