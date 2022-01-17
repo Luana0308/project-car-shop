@@ -6,7 +6,7 @@ function createProductImageElement(imageSource) {
 }
 
 function cartItemClickListener(event) {
-  // coloque seu código aqui
+ event.target.remove();
 }
 
 function createCustomElement(element, className, innerText) {
@@ -15,6 +15,7 @@ function createCustomElement(element, className, innerText) {
   e.innerText = innerText;
   return e;
 }
+
 function createCartItemElement({ id: sku, title: name, price: salePrice }) {
   const li = document.createElement('li');
   li.className = 'cart__item';
@@ -58,5 +59,5 @@ const criandoLista = async (produto) => {
 
 window.onload = async () => { 
   await criandoLista('computador');
-  adicionandoItemCarrinho();
+  await cartItemClickListener();
 };
