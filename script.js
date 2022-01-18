@@ -28,18 +28,19 @@ const adicionandoItemCarrinho = async (id) => {
   const funcaoApiItem = await fetchItem(id);
   const itemClasse = document.querySelector('.cart__items');
   itemClasse.appendChild(createCartItemElement(funcaoApiItem));
-  console.log(id);
 };
 
 function createProductItemElement({ sku, name, image }) {
   const section = document.createElement('section');
   section.className = 'item';
-
   section.appendChild(createCustomElement('span', 'item__sku', sku));
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
   const item = createCustomElement('button', 'item__add', 'Adicionar ao carrinho!');
-  item.addEventListener('click', () => adicionandoItemCarrinho(sku));
+  item.addEventListener('click', () => {
+    adicionandoItemCarrinho(sku);
+   localStorage.setItem('cart1Items', JSON.stringify({ id: 1234, title: 'computador', price: 12.000 }));
+  });
   section.appendChild(item);
   return section;
 }
@@ -57,7 +58,11 @@ const criandoLista = async (produto) => {
   }); 
 };
 
+const pegandoLocalStorage = () => {
+  return localStorage.getItem('cart1Items');
+}; 
+
 window.onload = async () => { 
   await criandoLista('computador');
-  await cartItemClickListener();
+  console.log(pegandoLocalStorage());
 };
