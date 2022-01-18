@@ -6,9 +6,22 @@ function createProductImageElement(imageSource) {
   return img;
 }
 
+// função que eu criei para fazer a soma dos itens do carrinho
+const somaCarrinho = () => {
+  const pegandoClassePreco = document.querySelector('.total-price');
+  const itensCarrinho = Array.from(document.getElementsByClassName('cart__item'));
+  const map = itensCarrinho.map((element) => {
+    const itemTexto = element.innerText;
+     return +itemTexto.split('$')[1];
+  });
+   const precoFinal = map.reduce((acc, elemento) => acc + elemento, 0);
+   pegandoClassePreco.innerText = precoFinal;
+ };
+
 // função que veio estruturada, eu usei para apagar o item no carrinho, atraves do target
 function cartItemClickListener(event) {
  event.target.remove();
+ somaCarrinho();
 }
 
 function createCustomElement(element, className, innerText) {
@@ -32,11 +45,12 @@ const adicionandoItemCarrinho = async (id) => {
   const funcaoApiItem = await fetchItem(id);
   const itemClasse = document.querySelector('.cart__items');
   itemClasse.appendChild(createCartItemElement(funcaoApiItem));
+  somaCarrinho();
 };
 
 // função que veio criada com os elementos para manipular o id, name e image e ai dentro do botão carrinho eu coloquei um evento de click que vai chamar a minha função de adicionar o item no carrinho. 
 function createProductItemElement(props) {
- const { id, title, thumbnail, price } = props;
+ const { id, title, thumbnail } = props;
   const section = document.createElement('section');
   section.className = 'item';
   section.appendChild(createCustomElement('span', 'item__sku', id));
@@ -65,26 +79,23 @@ const criandoLista = async (produto) => {
   }); 
 };
 
-// função para esvaziar o carrinho todo quando apertar o botão esvaziar
+// função que eu criei para esvaziar o carrinho todo quando apertar o botão esvaziar
 const esvaziarCarrinhoCompras = (() => {
  const botao = document.querySelector('.empty-cart');
  botao.addEventListener('click', () => {
-  // const myList = document.querySelector('.cart__item');
-  // console.log(myList);
-  // myList.innerHTML = '';
-  // console.log(myList);
-
   const itensLista = document.querySelectorAll('.cart__items li');
-  for (let i = 0; i < itensLista.length; i += 1) {
-    itensLista[i].remove();
-}
- });
+    for (let i = 0; i < itensLista.length; i += 1) {
+      itensLista[i].remove();
+    }
+    somaCarrinho();
+  });
 });
 
 window.onload = async () => { 
   await criandoLista('computador');
   esvaziarCarrinhoCompras();
+  somaCarrinho();
 };
 
-// o requisito 2 foi com a ajuda do Alessandro
+// o requisito 2 e requisito 5 foi com a ajuda do Alessandro
 // o requisito 3 tirei uma dúvida na monitoria
