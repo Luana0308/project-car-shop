@@ -65,18 +65,35 @@ function createProductItemElement(props) {
   return section;
 }
 
-function getSkuFromProductItem(item) {
-  return item.querySelector('span.item__sku').innerText;
-}
+// function getSkuFromProductItem(item) {
+//   return item.querySelector('span.item__sku').innerText;
+// }
+
+// função para carregar a pagina enquanto esta carregando a API
+const carregandoApi = () => {
+const divCarregando = document.createElement('div');
+divCarregando.className = 'loading';
+const sectionCarregando = document.querySelector('.items');
+sectionCarregando.appendChild(divCarregando);
+divCarregando.innerText = 'carregando...';
+};
+
+// função tirando o carregando depois de carregar o API
+const tirandoApi = () => {
+const pegandoClasse = document.getElementsByClassName('loading')[0];
+pegandoClasse.remove();
+};
 
 // função que eu criei para poder pegar a API dos pordutos e ai eu pego a minha classe do html e dentro dela eu faço um forEach para poder ir em item por item do meu API e dentro do for eu chamo a minha função creatProductItemElement que vai pegar os valores id, name, e image e coloca ela como filho da classe Items.
 const criandoLista = async (produto) => {
+   carregandoApi();
   const listaResultados = await fetchProducts(produto);
   const pegandoClasse = document.querySelector('.items');
   listaResultados.forEach((elemento) => { 
     const chamandoFuncao = createProductItemElement(elemento);
     pegandoClasse.appendChild(chamandoFuncao); 
   }); 
+  tirandoApi();
 };
 
 // função que eu criei para esvaziar o carrinho todo quando apertar o botão esvaziar
