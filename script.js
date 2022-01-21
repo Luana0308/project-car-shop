@@ -122,8 +122,8 @@ const esvaziarCarrinhoCompras = (() => {
       itensLista[i].remove();
     }
     somaCarrinho();
+    localStorage.clear();
   });
-  saveLocalStorage();
 });
 
 // função para pegar o que eu salvei na local storage
@@ -137,15 +137,14 @@ const getLocalStorage = () => {
     pegandoClasse.appendChild(criandoLi);
     criandoLi.addEventListener('click', cartItemClickListener);
   });
-  const botao = document.querySelector('.empty-cart');
+   const botao = document.querySelector('.empty-cart');
   botao.addEventListener('click', esvaziarCarrinhoCompras);
   somaCarrinho();
 };
-
+   esvaziarCarrinhoCompras();
 window.onload = async () => { 
   await criandoLista('computador');
   getLocalStorage();
-  // esvaziarCarrinhoCompras();
 };
 
 // o requisito 2 e requisito 5 e o requsito 4  foi com a ajuda do Alessandro
